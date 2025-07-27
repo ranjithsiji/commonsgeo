@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commonsgeo - Wikimedia Commons Geolocation Image Viewer</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="spinner"></div>
+    <div class="loading-container">
+        <div class="loading-bar"></div>
+    </div>
+    <header>
+        <h1>Wikimedia Commons Geolocation Image Viewer</h1>
+    </header>
+    <div class="container">
+
+
+        <div class="tabs">
+            <button class="tab active" data-tab="search">Search</button>
+            <button class="tab" data-tab="location">Location</button>
+            <button class="tab" data-tab="random">Random</button>
+        </div>
+
+        <div id="search" class="tab-content active">
+            <div class="input-section">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="location-search">Location Name</label>
+                        <div class="location-search">
+                            <input type="text" id="location-search" placeholder="e.g., Paris, Eiffel Tower">
+                            <button id="search-location-btn">Search</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-results" id="search-results"></div>
+                <div class="input-row">
+                    <div class="input-group small">
+                        <label for="search-radius">Radius (km)</label>
+                        <input type="number" id="search-radius" value="1" min="0.01" max="10" step="0.01">
+                        <div class="error-message" id="search-radius-error">0.01-10 km</div>
+                    </div>
+                    <div class="input-group small">
+                        <label for="search-limit">Max Results</label>
+                        <input type="number" id="search-limit" value="20" min="1" max="50">
+                    </div>
+                    <div class="input-group" style="flex: 0.5;">
+                        <button id="search-btn" class="btn-secondary">Find Images</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="location" class="tab-content">
+            <div class="input-section">
+                <div class="input-row">
+                    <div class="input-group small">
+                        <label for="latitude">Latitude</label>
+                        <input type="text" id="latitude" placeholder="e.g., 40.7128">
+                    </div>
+                    <div class="input-group small">
+                        <label for="longitude">Longitude</label>
+                        <input type="text" id="longitude" placeholder="e.g., -74.0060">
+                    </div>
+                    <div class="input-group" style="flex: 0.5;">
+                        <button id="locate-btn">My Location</button>
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group small">
+                        <label for="location-radius">Radius (km)</label>
+                        <input type="number" id="location-radius" value="1" min="0.01" max="10" step="0.01">
+                        <div class="error-message" id="location-radius-error">0.01-10 km</div>
+                    </div>
+                    <div class="input-group small">
+                        <label for="location-limit">Max Results</label>
+                        <input type="number" id="location-limit" value="20" min="1" max="50">
+                    </div>
+                    <div class="input-group" style="flex: 0.5;">
+                        <button class="btn-secondary" id="location-search-btn">Find Images</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="random" class="tab-content">
+            <div class="input-section">
+                <div class="input-row">
+                    <div class="input-group small">
+                        <label for="random-radius">Radius (km)</label>
+                        <input type="number" id="random-radius" value="1" min="0.01" max="10" step="0.01">
+                        <div class="error-message" id="random-radius-error">0.01-10 km</div>
+                    </div>
+                    <div class="input-group small">
+                        <label for="random-limit">Max Results</label>
+                        <input type="number" id="random-limit" value="20" min="1" max="50">
+                    </div>
+                    <div class="input-group" style="flex: 0.5;">
+                        <button id="random-location-btn" class="btn-secondary">Get Random Location</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div id="map"></div>
+
+
+            <div id="slideshow" class="splide">
+                <div class="splide__track">
+                    <ul class="splide__list" id="slideshow-container"></ul>
+                </div>
+            </div>
+
+            <div id="gallery"></div>
+
+            <div class="view-options">
+                <button id="show-gallery">Gallery View</button>
+                <button id="show-slideshow">Slideshow View</button>
+                <button id="clear-images" class="btn-clear">Clear Images</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Wikigeo</h3>
+                <p>This application allows you to explore geolocated images from Wikimedia Commons. Search by location
+                    name or coordinates to discover photos from around the world.</p>
+                <p>All images are sourced from Wikimedia Commons and are available under various Creative Commons
+                    licenses.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="https://commons.wikimedia.org" target="_blank">Wikimedia Commons</a></li>
+                    <li><a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a></li>
+                    <li><a href="https://wikidata.org" target="_blank">Wikidata</a></li>
+                    <li><a href="https://leafletjs.com" target="_blank">Leaflet Maps</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Source & Credits</h3>
+                <p>Built with jQuery, Leaflet, and Splide.js</p>
+                <p>Location data from OpenStreetMap Nominatim</p>
+                <p>Random locations from Wikidata</p>
+                <p>Images from Wikimedia Commons API</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Wikimedia Commons Geolocation Image Viewer | Created with ❤️ by Ranjithsiji</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
