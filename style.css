@@ -391,6 +391,8 @@ footer {
     margin: 5px 0;
     font-size: 0.9rem;
     color: #ccc;
+    padding: 20px;
+    text-align: left;
 }
 
 .footer-links {
